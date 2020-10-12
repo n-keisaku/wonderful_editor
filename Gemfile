@@ -14,7 +14,7 @@ gem "webpacker", "~> 4.0"
 
 group :development, :test do
   gem "devise"
-  gem "devise_token_auth"
+  # gem "devise_token_auth"
   gem "factory_bot_rails"
   gem "faker"
   gem "pry-byebug"
