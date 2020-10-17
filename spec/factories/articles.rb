@@ -17,8 +17,10 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
-class Article < ApplicationRecord
-  belongs_to :user
-  has_many :comments, dependent: :destroy
-  has_many :article_likes, dependent: :destroy
+FactoryBot.define do
+  factory :article do
+    title { "MyString" }
+    body { "MyText" }
+    user { nil }
+  end
 end

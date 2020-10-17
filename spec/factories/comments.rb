@@ -19,9 +19,10 @@
 #  fk_rails_...  (article_id => articles.id)
 #  fk_rails_...  (user_id => users.id)
 #
-require "rails_helper"
-# rubocop:disable all
-RSpec.describe Comment, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+FactoryBot.define do
+  factory :comment do
+    body { "MyText" }
+    user { nil }
+    article { nil }
+  end
 end
-# rubocop:enable all
