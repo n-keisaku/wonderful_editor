@@ -18,9 +18,6 @@
 #  fk_rails_...  (user_id => users.id)
 #
 FactoryBot.define do
-  factory :article do
-    title { "MyString" }
-    body { "MyText" }
-    user { nil }
-  end
+
+
 end
