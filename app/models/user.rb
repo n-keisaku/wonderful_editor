@@ -43,6 +43,4 @@ class User < ApplicationRecord
   has_many :article_likes, dependent: :destroy
 
   validates :name, presence: true
-  validates :name, uniqueness: true
-
 end
