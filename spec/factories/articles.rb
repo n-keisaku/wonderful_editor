@@ -18,4 +18,9 @@
 #  fk_rails_...  (user_id => users.id)
 #
 FactoryBot.define do
+  factory :article do
+    title { Faker::Lorem.word }
+    body { Faker::Lorem.sentence }
+    user
+  end
 end
