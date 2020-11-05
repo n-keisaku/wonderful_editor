@@ -20,6 +20,18 @@
 require "rails_helper"
 # rubocop:disable all
 RSpec.describe Article, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  context " title, body, user_id が登録されたとき " do
+    it " 記事が登録できる "do
+    user = create(:user)
+    article = user.articles.build(
+      title: "title",
+      body: "body",
+      user_id: 1
+    )
+    expect(article).to be_valid
+    end
+  end
+
 end
 # rubocop:enable all

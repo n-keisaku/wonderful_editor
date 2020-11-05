@@ -29,6 +29,7 @@ module WonderfulEditor
       g.stylesheets false
       g.helper false
       g.test_framework :rspec,
+                       fixtures: true,
                        view_specs: false,
                        routing_specs: false,
                        helper_specs: false,
