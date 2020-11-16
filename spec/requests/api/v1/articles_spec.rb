@@ -27,7 +27,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
       let(:article) { create(:article) }
       let(:article_id) { article.id }
 
-      fit "その記事のレコードが取得できる" do
+      it "その記事のレコードが取得できる" do
         subject
         res = JSON.parse(response.body)
 
@@ -47,6 +47,29 @@ RSpec.describe "Api::V1::Articles", type: :request do
 
       it "記事が見つからない" do
         expect { subject }.to raise_error ActiveRecord::RecordNotFound
+      end
+    end
+  end
+
+  describe "POST /articles" do
+    subject { post(api_v1_articles_path, params: params) }
+
+    context "適切なパラメーターを送信したとき" do
+      let(:params) { { article: attributes_for(:article) } }
+      let(:current_user) { create(:user) }
+
+      # before {} 事前に走らせたい処理を書く
+      # スタブ allow(モックオブジェクト).to receive(メソッド名).and_return(返したい値)
+      # クラスメソッド allow(Class).to receive(:target_method).and_return('mock_value')
+      # インスタンスメソッド allow_any_instance_of(Class).to receive(:target_method).and_return('mock_value')
+      before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+
+      it "記事のレコードを作成できる" do
+        expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)
+        res = JSON.parse(response.body)
+        expect(res["title"]).to eq params[:article][:title]
+        expect(res["body"]).to eq params[:article][:body]
+        expect(response).to have_http_status(:ok)
       end
     end
   end
