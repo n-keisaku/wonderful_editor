@@ -50,4 +50,39 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
       end
     end
   end
+
+  describe "DELETE /api/v1/auth/sign_in" do
+    subject { delete(destroy_api_v1_user_session_path, headers: headers) }
+
+    context "ログアウトに必要な情報が送信されたとき" do
+      # ログインしているとき
+      # ログアウトしようとした場合、ログアウトAPIを呼び出すと、成功する
+
+      # ログインに必要なヘッダー情報
+      let(:user) { create(:user) }
+      let!(:headers) { user.create_new_auth_token }
+      it "有効なトークン情報が無くなりログアウトする" do
+        # subject を実行してトークンを再取得すると、トークン有り(true)からトークン無し(false)に変化する
+        expect { subject }.to change { user.reload.tokens }.from(be_present).to(be_blank)
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "ログアウトに間違った情報が送信されたとき" do
+      # ログインしていないとき
+      # ログアウトしようとした場合、ログアウトAPIを呼び出すと、失敗する
+
+      # 認証ヘッダー["access-token","client","expiry","uid"]
+      let(:user) { create(:user) }
+      let!(:token) { user.create_new_auth_token }
+      let!(:headers) { { "access-token" => "", "client" => "", "expiry" => "", "uid" => "" } }
+      it "ログアウトできない" do
+        # 持っているトークンに変化がないこと
+        subject
+        res = JSON.parse(response.body)
+        expect(response).to have_http_status(:not_found)
+        expect(res["errors"]).to include "User was not found or was not logged in."
+      end
+    end
+  end
 end
