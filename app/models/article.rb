@@ -22,5 +22,8 @@ class Article < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :article_likes, dependent: :destroy
 
+  # enum をハッシュで定義し宣言の順番依存をなくす
+  enum status: { draft: "draft", published: "published" }
+
   validates :title, presence: true
 end
