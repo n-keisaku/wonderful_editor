@@ -20,18 +20,41 @@
 require "rails_helper"
 # rubocop:disable all
 RSpec.describe Article, type: :model do
-
-  context " title, body, user_id が登録されたとき " do
-    it " 記事が登録できる "do
-    user = create(:user)
-    article = user.articles.build(
-      title: "title",
-      body: "body",
-      user_id: 1
-    )
-    expect(article).to be_valid
+  # context " title, body, user_id が登録されたとき " do
+  #   it " 記事が登録できる "do
+  #   user = create(:user)
+  #   article = user.articles.build(
+  #     title: "title",
+  #     body: "body",
+  #     user_id: 1
+  #   )
+  #   expect(article).to be_valid
+  #   end
+  # end
+  # 下書き記事だけ取得できる
+  # 公開記事だけ取得できる
+  context " タイトルと本文が入力されているとき " do
+    let(:article) { build(:article) }
+    it " 記事の下書きが作成できる" do
+      expect(article).to be_valid
+      expect(article.status).to eq "draft"
     end
   end
 
+  context " status が下書き状態のとき " do
+    let(:article) { build(:article, :draft) }
+    it " 記事を下書き状態で作成できる " do
+      expect(article).to be_valid
+      expect(article.status).to eq "draft"
+    end
+  end
+
+  context " status が公開状態のとき " do
+    let(:article) { build(:article, :published) }
+    fit " 記事を公開状態で作成できる " do
+      expect(article).to be_valid
+      expect(article.status).to eq "published"
+    end
+  end
 end
 # rubocop:enable all
