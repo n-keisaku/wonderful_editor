@@ -31,6 +31,7 @@ RSpec.describe Article, type: :model do
   #   expect(article).to be_valid
   #   end
   # end
+
   # 下書き記事だけ取得できる
   # 公開記事だけ取得できる
   context " タイトルと本文が入力されているとき " do
@@ -51,10 +52,11 @@ RSpec.describe Article, type: :model do
 
   context " status が公開状態のとき " do
     let(:article) { build(:article, :published) }
-    fit " 記事を公開状態で作成できる " do
+    it " 記事を公開状態で作成できる " do
       expect(article).to be_valid
       expect(article.status).to eq "published"
     end
   end
+
 end
 # rubocop:enable all
